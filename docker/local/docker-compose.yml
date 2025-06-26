@@ -1,0 +1,21 @@
+services:
+  php:
+    build:
+      context: ./
+    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+    image: php84
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../../application/:/var/www
+  supervisor:
+    restart: always
+    image: php84
+    build:
+      context: ./
+    entrypoint: ["supervisord"]
+    command: ["-c", "/etc/supervisor/supervisord.conf"]
+    volumes:
+      - ./superviosr/config/:/etc/supervisor/
+      - ../../var/log/supervisor/:/var/log/supervisor/
+
